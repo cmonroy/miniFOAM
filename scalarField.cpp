@@ -23,11 +23,12 @@
 
 #include <iostream>
 #include <fstream>
-#include <Eigen/Dense>
-using namespace std;
 
-using Eigen::VectorXd;
-using namespace Eigen;
+#include <Eigen/Sparse>
+typedef Eigen::SparseMatrix<double> SpMat; // declares a column-major sparse matrix type of double
+typedef Eigen::Triplet<double> T;
+
+using namespace std;
 
 
 scalarField::scalarField(std::string name, mesh& mesh_)
@@ -86,9 +87,11 @@ void scalarField::update(Eigen::VectorXd& b)
 }
 
 
-Eigen::MatrixXd scalarField::ddtA(simulation& simu_)
+SpMat scalarField::ddtA(simulation& simu_)
 {
-    Eigen::MatrixXd A_(this->m_N,this->m_N);
+    SpMat A_(this->m_N,this->m_N);
+    std::vector<T> tripletList;
+
 
     for (int i = 0; i < this->m_N; i++)
     {
@@ -96,14 +99,12 @@ Eigen::MatrixXd scalarField::ddtA(simulation& simu_)
         {
             if (i==j)
             {
-               A_(i,j)=1.0/simu_.getDt();
-            }
-            else
-            {
-                A_(i,j)=0.0;
+               tripletList.push_back(T(i,j,1.0/simu_.getDt()));
             }
         }
     }
+
+    A_.setFromTriplets(tripletList.begin(), tripletList.end());
 
     return A_;
 }
@@ -121,9 +122,9 @@ Eigen::VectorXd scalarField::ddtb(simulation& simu_)
     return b_;
 }
 
-Eigen::MatrixXd scalarField::divA(calculatedVectorField& Uf_, simulation& simu_)
+SpMat scalarField::divA(calculatedVectorField& Uf_, simulation& simu_)
 {
-    Eigen::MatrixXd A_(this->m_N,this->m_N);
+    SpMat A_(this->m_N,this->m_N);
 
 
     //TODO: code divergence operator

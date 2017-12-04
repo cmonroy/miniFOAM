@@ -21,11 +21,12 @@
 #include "simulation.hpp"
 #include "scalarField.hpp"
 #include "calculatedVectorField.hpp"
-#include <Eigen/Dense>
-//using namespace Eigen;
+#include <Eigen/Sparse>
+
 
 using namespace std;
 
+typedef Eigen::SparseMatrix<double> SpMat; // declares a column-major sparse matrix type of double
 
 
 int main()
@@ -33,11 +34,11 @@ int main()
 
     simulation simu;
 
-	cartesianGrid CG(50, 10.0);
+	cartesianGrid CG(100, 10.0);
 
 	CG.writeMesh();
 
-    Eigen::MatrixXd A(CG.getN(),CG.getN());
+    SpMat A(CG.getN(),CG.getN());
     Eigen::VectorXd b(CG.getN());
 
     calculatedVectorField Uf("Uf", CG);
@@ -52,11 +53,15 @@ int main()
         simu.increment();
 		std::cout << simu.getT() << std::endl;
 
+
+        // Building linear system
 		A=alpha.ddtA(simu); //+alpha.divA(Uf,simu);
         b=alpha.ddtb(simu);
 
-        Eigen::VectorXd x(CG.getN());
-        x=A.colPivHouseholderQr().solve(b);
+        // Solving:
+        Eigen::SimplicialCholesky<SpMat> chol(A);  // performs a Cholesky factorization of A
+        Eigen::VectorXd x = chol.solve(b);         // use the factorization to solve for the given right hand side
+
 
         alpha.update(x);
 

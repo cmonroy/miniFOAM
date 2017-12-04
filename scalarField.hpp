@@ -3,10 +3,10 @@
 
 #include <string>
 #include <vector>
-#include <Eigen/Dense>
+#include <Eigen/Sparse>
+typedef Eigen::SparseMatrix<double> SpMat; // declares a column-major sparse matrix type of double
 
-using Eigen::VectorXd;
-//using namespace std;
+
 
 class mesh;
 class simulation;
@@ -21,12 +21,15 @@ class scalarField
 
 public:
 	scalarField(std::string, mesh&);
-    Eigen::MatrixXd ddtA(simulation&);
+    SpMat ddtA(simulation&);
     Eigen::VectorXd ddtb(simulation&);
+
+
+
     void initialize(mesh&);
     void writeSF(simulation&);
     void update(Eigen::VectorXd&);
-    Eigen::MatrixXd divA(calculatedVectorField&, simulation&);
+    SpMat divA(calculatedVectorField&, simulation&);
     //Eigen::vectorXd divb(vectorField);
 };
 
