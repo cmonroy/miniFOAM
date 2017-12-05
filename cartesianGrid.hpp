@@ -1,5 +1,5 @@
 //****************************************************************************//
-//    This file is part of miniFOAM, simple, 2D, object-oriented CFD solver.  //
+//    This file is part of miniFOAM: simple, 2D, object-oriented CFD solver.  //
 //                                                                            //
 //    Copyright (C) Charles Monroy <charles.monroy@gmail.com>                 //
 //                                                                            //
