@@ -34,7 +34,7 @@ int main()
 
     simulation simu;
 
-	cartesianGrid CG(100, 10.0);
+	cartesianGrid CG(25, 10.0);
 
 	CG.writeMesh();
 
@@ -42,6 +42,7 @@ int main()
     Eigen::VectorXd b(CG.getN());
 
     calculatedVectorField Uf("Uf", CG);
+    Uf.initialize(CG);
 
     scalarField alpha("alpha", CG);
     alpha.initialize(CG);
@@ -55,16 +56,17 @@ int main()
 
 
         // Building linear system
-		A=alpha.ddtA(simu); //+alpha.divA(Uf,simu);
+		A=alpha.ddtA(simu)+alpha.divA(Uf,simu,CG);
         b=alpha.ddtb(simu);
 
         // Solving:
         Eigen::SimplicialCholesky<SpMat> chol(A);  // performs a Cholesky factorization of A
         Eigen::VectorXd x = chol.solve(b);         // use the factorization to solve for the given right hand side
 
-
+        // Updating alpha field:
         alpha.update(x);
 
+        // Writing alpha field:
         alpha.writeSF(simu);
 
     }

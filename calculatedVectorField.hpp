@@ -39,6 +39,8 @@ class calculatedVectorField
 public:
 	calculatedVectorField(std::string, mesh&);
     void initialize(mesh&);
+	std::vector<double> getUx() const { return Ux; };
+	std::vector<double> getUy() const { return Uy; };
     //void writeCVF(simulation&);
     //void update(Eigen::VectorXd&);
 

@@ -27,27 +27,22 @@ using namespace std;
 
 class face
 {
-	float m_Uf;
-	float m_Vf;
-	float m_Sfx;
-	float m_Sfy;
-	float m_Phi;
+	double m_Sfx;
+	double m_Sfy;
+
+	double m_length;
 
 	int m_label;
  	std::vector<int> m_labelList;  //dans le cas 3D, m_labelList(3) ou m_labelList(4) ... à modifier
 
-	//cell* m_owner;
-	//cell* m_neighbour;
 
 public:
 	face(int, point&, point&);  //dans le cas 3D, créer 2 constructeurs différents (à partir de 3 points et de 4 points)
 	vector<int> getLabelList() const { return m_labelList; };
 	int getLabel() const { return m_label; };
-
-	//void setOwner(cell&);
-	//void setNeighbour(cell&);
+	double getSfx() const { return m_Sfx; };
+	double getSfy() const { return m_Sfy; };
 	//~cartesianFace();
-	//void computeFlux();
 };
 
 

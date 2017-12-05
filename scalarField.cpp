@@ -18,6 +18,7 @@
 //****************************************************************************//
 #include "scalarField.hpp"
 #include "mesh.hpp"
+#include "face.hpp"
 #include "simulation.hpp"
 #include "calculatedVectorField.hpp"
 
@@ -42,7 +43,6 @@ scalarField::scalarField(std::string name, mesh& mesh_)
 		valueOld.push_back(0.0);
 	}
 }
-
 
 
 void scalarField::initialize(mesh& mesh_)
@@ -77,9 +77,10 @@ void scalarField::writeSF(simulation& simu_)
 	scalarFile.close();
 }
 
+
 void scalarField::update(Eigen::VectorXd& b)
 {
-    for (int i = 0; i < m_N; i++)
+    for (int i = 0; i < this->m_N; i++)
     {
         this->valueOld[i]=this->valueCurrent[i];
         this->valueCurrent[i]=b(i);
@@ -122,26 +123,42 @@ Eigen::VectorXd scalarField::ddtb(simulation& simu_)
     return b_;
 }
 
-SpMat scalarField::divA(calculatedVectorField& Uf_, simulation& simu_)
+SpMat scalarField::divA(calculatedVectorField& Uf_, simulation& simu_, mesh& mesh_)
 {
     SpMat A_(this->m_N,this->m_N);
 
+    Eigen::VectorXd diagCoefs_= Eigen::VectorXd::Zero(this->m_N);
 
-    //TODO: code divergence operator
-    /*for (int i = 0; i < this->m_N; i++)
+    std::vector<T> tripletList;
+
+    for (int k=0; k<mesh_.getF(); k++) // loop on the faces
     {
-        for (int j = 0; j < this->m_N; j++)
+        //face face_=mesh_.getFaces()[k];
+        int owner=mesh_.getOwnerList()[k];
+        int neighbour=mesh_.getNeighbourList()[k];
+
+        if (neighbour>=0) //internal face
         {
-            if (i==j)
-            {
-               A_(i,j)=1.0/simu_.getDt();
-            }
-            else
-            {
-                A_(i,j)=0.0;
-            }
+            //double interpolatedValueOnFace_=(this->valueCurrent[owner]+this->valueCurrent[neighbour])*0.5; //TODO: do a dedicated method for this (taking into account face normals)
+            double flux_=Uf_.getUx()[k]*mesh_.getFaces()[k]->getSfx()+Uf_.getUy()[k]*mesh_.getFaces()[k]->getSfy();
+            diagCoefs_[owner]=diagCoefs_[owner]+flux_*0.5;
+            diagCoefs_[neighbour]=diagCoefs_[neighbour]-flux_*0.5;
+            tripletList.push_back(T(owner,neighbour,flux_*0.5));
+            tripletList.push_back(T(neighbour,owner,-flux_*0.5));
         }
-    }*/
+        else // boundary face
+        {
+            double flux_=Uf_.getUx()[k]*mesh_.getFaces()[k]->getSfx()+Uf_.getUy()[k]*mesh_.getFaces()[k]->getSfy();
+            diagCoefs_[owner]=diagCoefs_[owner]+flux_;
+        }
+    }
+
+    for (int i=0; i<this->m_N; i++)
+    {
+        tripletList.push_back(T(i,i,diagCoefs_[i]));
+    }
+
+    A_.setFromTriplets(tripletList.begin(), tripletList.end());
 
     return A_;
 }

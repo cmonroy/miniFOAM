@@ -18,32 +18,18 @@
 //****************************************************************************//
 #include "face.hpp"
 #include <string>
+#include <math.h>
 
 using namespace std;
 
 face::face(int l, point& pointA, point& pointB)
 {
 	m_label = l;
-	m_Uf = 0;
-	m_Vf = 0;
-	m_Sfx = 0;
-	m_Sfy = 0;
-	m_Phi=0;
+	m_length = pow(pow(pointB.getX()-pointA.getX(),2)+pow(pointB.getY()-pointA.getY(),2),0.5);
+	m_Sfx = -(pointB.getY()-pointA.getY())/m_length;
+	m_Sfy = (pointB.getX()-pointA.getX())/m_length;
 	m_labelList.push_back(pointA.getLabel());
 	m_labelList.push_back(pointB.getLabel());
 }
 
-/*void face::computeFlux()
-{
-	m_Phi = (m_owner->getU() - m_neighbour->getU())*m_Sfx + (m_owner->getV() - m_neighbour->getV())*m_Sfy;
-}
 
-void face::setOwner(cell& c)
-{
-	m_owner = &c;
-}
-
-void face::setNeighbour(cell& c)
-{
-	m_neighbour = &c;
-}*/

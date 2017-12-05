@@ -42,12 +42,11 @@ public:
     SpMat ddtA(simulation&);
     Eigen::VectorXd ddtb(simulation&);
 
-
-
+    //std::vector<double> interpolateOnFaces(mesh&); //returns a vector of interpolated values at faces
     void initialize(mesh&);
     void writeSF(simulation&);
     void update(Eigen::VectorXd&);
-    SpMat divA(calculatedVectorField&, simulation&);
+    SpMat divA(calculatedVectorField&, simulation&, mesh& mesh_);
     //Eigen::vectorXd divb(vectorField);
 };
 
