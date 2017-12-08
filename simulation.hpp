@@ -26,6 +26,8 @@ class simulation
 	double dt;
 	double endTime;
 	double t;
+	double L;
+	int Nx;
     std::string simulationFolder;
 
 public :
@@ -36,6 +38,7 @@ public :
 	double getEndTime() const { return endTime; };
 	std::string getFolder() const { return simulationFolder; };
 	void increment();
+	void writeVisuFile();
 };
 
 

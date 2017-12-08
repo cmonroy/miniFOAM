@@ -17,6 +17,7 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.   //
 //****************************************************************************//
 #include "mesh.hpp"
+#include "simulation.hpp"
 #include "point.hpp"
 #include "face.hpp"
 #include "cell.hpp"
@@ -53,7 +54,7 @@ mesh::~mesh()
 
 
 
-void mesh::writeMesh()
+void mesh::writeMesh(simulation& simu_)
 {
 
    /* boost::filesystem::path dir("~/trash/mesh");
@@ -65,14 +66,16 @@ void mesh::writeMesh()
             std::cout << "....Successfully Created !" << std::end;
     }*/
 
-    std::string myPath("/home/charles/trash/mesh");
-    std::string myCommand("mkdir -p "  + myPath);
-    //system("mkdir -p ~/trash/mesh");
+    std::string simuFolder(simu_.getFolder());
+
+    std::string meshFolder = simuFolder + "/mesh";
+    std::string myCommand("mkdir -p "  + meshFolder);
     system(myCommand.c_str());
+
 //const char *path="/home/user/file.txt";
   	ofstream pointFile;
   	//pointFile.open ("/home/charles/trash/mesh/points.txt");
-  	pointFile.open (myPath+"/points.txt");
+  	pointFile.open (meshFolder+"/points.txt");
   	pointFile << totalNumberOfPoints << "\n";
 	for (int i=0;  i < totalNumberOfPoints; i++)
 	{
@@ -81,7 +84,7 @@ void mesh::writeMesh()
 	pointFile.close();
 
   	ofstream faceFile;
-  	faceFile.open (myPath+"/faces.txt");
+  	faceFile.open (meshFolder+"/faces.txt");
   	faceFile << totalNumberOfFaces << "\n";
 	for (int i=0;  i < totalNumberOfFaces; i++)
 	{
@@ -95,7 +98,7 @@ void mesh::writeMesh()
 	faceFile.close();
 
   	ofstream cellFile;
-  	cellFile.open (myPath+"/cells.txt");
+  	cellFile.open (meshFolder+"/cells.txt");
   	cellFile << totalNumberOfCells << "\n";
 	for (int i=0;  i < totalNumberOfCells; i++)
 	{
@@ -109,7 +112,7 @@ void mesh::writeMesh()
 	cellFile.close();
 
   	ofstream ownerFile;
-  	ownerFile.open (myPath+"/owners.txt");
+  	ownerFile.open (meshFolder+"/owners.txt");
   	ownerFile << totalNumberOfFaces << "\n";
 	for (int i=0;  i < totalNumberOfFaces; i++)
 	{
@@ -118,7 +121,7 @@ void mesh::writeMesh()
 	ownerFile.close();
 
   	ofstream neigbourFile;
-  	neigbourFile.open (myPath+"/neighbours.txt");
+  	neigbourFile.open (meshFolder+"/neighbours.txt");
   	neigbourFile << totalNumberOfFaces << "\n";
 	for (int i=0;  i < totalNumberOfFaces; i++)
 	{

@@ -22,6 +22,8 @@
 #include <string>
 #include <vector>
 
+class simulation;
+
 class cell;
 class face;
 class point;
@@ -47,7 +49,7 @@ protected:
 public:
 	mesh();
 	~mesh();
-	void writeMesh();
+	void writeMesh(simulation&);
 	int getN() const { return totalNumberOfCells; };
 	int getF() const { return totalNumberOfFaces; };
 	float getxCOG(int) const;

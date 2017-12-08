@@ -44,10 +44,11 @@ public:
 
     //std::vector<double> interpolateOnFaces(mesh&); //returns a vector of interpolated values at faces
     void initialize(mesh&);
-    void writeSF(simulation&);
+    void writeSF(simulation&); //writes value of scalar field
+    void writeXYandSF(mesh&,simulation&); //writes coordinates of centers of cells + values of scalar field
     void update(Eigen::VectorXd&);
-    SpMat divA(calculatedVectorField&, simulation&, mesh& mesh_);
-    //Eigen::vectorXd divb(vectorField);
+    SpMat divA(calculatedVectorField&, simulation&, mesh&);
+    //Eigen::vectorXd divb(calculatedVectorField&, simulation&, mesh&);
 };
 
 

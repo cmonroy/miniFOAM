@@ -77,6 +77,27 @@ void scalarField::writeSF(simulation& simu_)
 	scalarFile.close();
 }
 
+void scalarField::writeXYandSF(mesh& mesh_,simulation& simu_)
+{
+    std::string simuFolder(simu_.getFolder());
+    std::ostringstream strT;
+    strT << simu_.getT();
+    std::string timeFolder = simuFolder + "/" + strT.str() + "/";
+    std::string myCommand("mkdir -p "  + timeFolder);
+    system(myCommand.c_str());
+
+  	ofstream scalarFile;
+  	scalarFile.open (timeFolder+this->m_name);
+  	scalarFile << "# " << this->m_N << "\n";
+	for (int i=0;  i < this->m_N; i++)
+	{
+ 		scalarFile <<  mesh_.getxCOG(i) << " " << mesh_.getyCOG(i) << " " << this->valueCurrent[i] << "\n";
+	}
+	scalarFile.close();
+}
+
+
+
 
 void scalarField::update(Eigen::VectorXd& b)
 {
@@ -149,6 +170,7 @@ SpMat scalarField::divA(calculatedVectorField& Uf_, simulation& simu_, mesh& mes
         else // boundary face
         {
             double flux_=Uf_.getUx()[k]*mesh_.getFaces()[k]->getSfx()+Uf_.getUy()[k]*mesh_.getFaces()[k]->getSfy();
+            // Neumann boundary condition (ie zero-gradient BC):
             diagCoefs_[owner]=diagCoefs_[owner]+flux_;
         }
     }

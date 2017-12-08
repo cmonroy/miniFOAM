@@ -36,7 +36,7 @@ int main()
 
 	cartesianGrid CG(25, 10.0);
 
-	CG.writeMesh();
+	CG.writeMesh(simu);
 
     SpMat A(CG.getN(),CG.getN());
     Eigen::VectorXd b(CG.getN());
@@ -46,8 +46,8 @@ int main()
 
     scalarField alpha("alpha", CG);
     alpha.initialize(CG);
-    alpha.writeSF(simu);
-
+    //alpha.writeSF(simu);
+    alpha.writeXYandSF(CG, simu);
 
     while(simu.getT()<simu.getEndTime())
     {
@@ -67,10 +67,12 @@ int main()
         alpha.update(x);
 
         // Writing alpha field:
-        alpha.writeSF(simu);
-
+        //alpha.writeSF(simu);
+        alpha.writeXYandSF(CG, simu);
     }
 
+
+    simu.writeVisuFile();
 
 	return 0;
 
