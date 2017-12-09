@@ -34,7 +34,7 @@ int main()
 
     simulation simu;
 
-	cartesianGrid CG(25, 10.0);
+	cartesianGrid CG(simu.getNx(), simu.getL());
 
 	CG.writeMesh(simu);
 
@@ -57,7 +57,7 @@ int main()
 
         // Building linear system
 		A=alpha.ddtA(simu)+alpha.divA(Uf,simu,CG);
-        b=alpha.ddtb(simu);
+        b=alpha.ddtb(simu);//+alpha.divb_explicit(Uf,simu,CG);
 
         // Solving:
         Eigen::SimplicialCholesky<SpMat> chol(A);  // performs a Cholesky factorization of A

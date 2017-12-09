@@ -36,6 +36,8 @@ public :
 	double getT() const { return t; };
 	double getDt() const { return dt; };
 	double getEndTime() const { return endTime; };
+	double getL() const { return L; };
+	int getNx() const { return Nx; };
 	std::string getFolder() const { return simulationFolder; };
 	void increment();
 	void writeVisuFile();

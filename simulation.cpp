@@ -33,7 +33,7 @@ simulation::simulation() //TODO: create a constructor from a dictionnary
     t=0;
     dt=0.5;
     L=10.0; //length of the square
-    Nx=25; //number of cells in x-direction
+    Nx=40; //number of cells in x-direction
     endTime=10.0;
     simulationFolder="/home/charles/trash/sim1";
 }
@@ -71,7 +71,7 @@ void simulation::writeVisuFile()
 
   	pythonFile << listOfTimeSteps << "\n";
 
-  	pythonFile << "x,y,scalar = np.loadtxt('1/alpha').T #Transposed for easier unpacking" << "\n";
+  	pythonFile << "x,y,scalar = np.loadtxt('5/alpha').T #Transposed for easier unpacking" << "\n";
   	pythonFile << "nrows, ncols = "<< Nx <<", " << Nx << "\n";
 
   	pythonFile << "grid = scalar.reshape((nrows, ncols))" << "\n";
