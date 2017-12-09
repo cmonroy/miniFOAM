@@ -154,18 +154,38 @@ SpMat scalarField::divA(calculatedVectorField& Uf_, simulation& simu_, mesh& mes
 
     for (int k=0; k<mesh_.getF(); k++) // loop on the faces
     {
-        //face face_=mesh_.getFaces()[k];
         int owner=mesh_.getOwnerList()[k];
         int neighbour=mesh_.getNeighbourList()[k];
 
         if (neighbour>=0) //internal face
         {
-            //double interpolatedValueOnFace_=(this->valueCurrent[owner]+this->valueCurrent[neighbour])*0.5; //TODO: do a dedicated method for this (taking into account face normals)
             double flux_=Uf_.getUx()[k]*mesh_.getFaces()[k]->getSfx()+Uf_.getUy()[k]*mesh_.getFaces()[k]->getSfy();
-            diagCoefs_[owner]=diagCoefs_[owner]+flux_*0.5;
-            diagCoefs_[neighbour]=diagCoefs_[neighbour]-flux_*0.5;
-            tripletList.push_back(T(owner,neighbour,flux_*0.5));
-            tripletList.push_back(T(neighbour,owner,-flux_*0.5));
+
+            //central-difference scheme:
+            /*diagCoefs_[owner]=diagCoefs_[owner]+flux_*0.5;
+            diagCoefs_[neighbour]=diagCoefs_[neighbour]+flux_*0.5;
+            tripletList.push_back(T(owner,neighbour,-flux_*0.5));
+            tripletList.push_back(T(neighbour,owner,-flux_*0.5));*/
+
+            //Upwind
+            if (flux_>0)
+            {
+                diagCoefs_[owner]=diagCoefs_[owner]+flux_;
+
+                tripletList.push_back(T(owner,neighbour,0.0));
+                tripletList.push_back(T(neighbour,owner,-flux_));
+            }
+            else
+            {
+                diagCoefs_[neighbour]=diagCoefs_[neighbour]-flux_;
+                tripletList.push_back(T(owner,neighbour,flux_));
+                tripletList.push_back(T(neighbour,owner,0.0));
+            }
+
+
+
+
+
         }
         else // boundary face
         {
@@ -184,3 +204,46 @@ SpMat scalarField::divA(calculatedVectorField& Uf_, simulation& simu_, mesh& mes
 
     return A_;
 }
+
+
+Eigen::VectorXd scalarField::divb_explicit(calculatedVectorField& Uf_, simulation& simu_, mesh& mesh_)
+{
+    Eigen::VectorXd b_=Eigen::VectorXd::Zero(this->m_N);
+
+    for (int k=0; k<mesh_.getF(); k++) // loop on the faces
+    {
+        int owner=mesh_.getOwnerList()[k];
+        int neighbour=mesh_.getNeighbourList()[k];
+        double flux_=Uf_.getUx()[k]*mesh_.getFaces()[k]->getSfx()+Uf_.getUy()[k]*mesh_.getFaces()[k]->getSfy();
+
+
+        if (neighbour>=0) //internal face
+        {
+            //central difference scheme
+            b_(owner)=b_(owner)+flux_*(0.5*this->valueOld[owner]-0.5*this->valueOld[neighbour]);
+            b_(neighbour)=b_(neighbour)-flux_*(0.5*this->valueOld[owner]-0.5*this->valueOld[neighbour]);
+
+            //Upwind
+            /*if (flux_>0)
+            {
+                b_(owner)=b_(owner)+flux_*(this->valueOld[owner]);
+                b_(neighbour)=b_(neighbour)-flux_*(this->valueOld[neighbour]);
+            }
+            else
+            {
+                b_(owner)=b_(owner)-flux_*(this->valueOld[owner]);
+                b_(neighbour)=b_(neighbour)+flux_*(this->valueOld[neighbour]);
+            }*/
+        }
+        else
+        {
+                b_(owner)=b_(owner)+flux_*(this->valueOld[owner]);
+        }
+
+    }
+
+
+
+    return b_;
+}
+

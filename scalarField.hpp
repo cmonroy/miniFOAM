@@ -48,7 +48,7 @@ public:
     void writeXYandSF(mesh&,simulation&); //writes coordinates of centers of cells + values of scalar field
     void update(Eigen::VectorXd&);
     SpMat divA(calculatedVectorField&, simulation&, mesh&);
-    //Eigen::vectorXd divb(calculatedVectorField&, simulation&, mesh&);
+    Eigen::VectorXd divb_explicit(calculatedVectorField&, simulation&, mesh&);
 };
 
 
