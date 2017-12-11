@@ -31,7 +31,7 @@ using namespace std;
 simulation::simulation() //TODO: create a constructor from a dictionnary
 {
     t=0;
-    dt=0.5;
+    dt=0.1;
     L=10.0; //length of the square
     Nx=40; //number of cells in x-direction
     endTime=10.0;
@@ -68,20 +68,35 @@ void simulation::writeVisuFile()
   	pythonFile << "import numpy as np" << "\n";
   	pythonFile << "import matplotlib.pyplot as plt" << "\n";
   	pythonFile << "import matplotlib.cm as cm" << "\n";
+  	pythonFile << "import matplotlib.animation as animation" << "\n";
+  	pythonFile << "# Set up formatting for the movie files" << "\n";
+
+  	pythonFile << "Writer = animation.writers['ffmpeg']" << "\n";
+  	pythonFile << "writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)" << "\n";
+  	pythonFile << "images = []" << "\n";
+
+  	pythonFile << "fig2 = plt.figure()" << "\n";
 
   	pythonFile << listOfTimeSteps << "\n";
-
-  	pythonFile << "x,y,scalar = np.loadtxt('5/alpha').T #Transposed for easier unpacking" << "\n";
+  	pythonFile << "x,y,scalar = np.loadtxt('0/alpha').T #Transposed for easier unpacking" << "\n";
   	pythonFile << "nrows, ncols = "<< Nx <<", " << Nx << "\n";
-
   	pythonFile << "grid = scalar.reshape((nrows, ncols))" << "\n";
-
-  	pythonFile << "img = plt.imshow(grid, extent=(x.min(), x.max(), y.max(), y.min()), interpolation='nearest', cmap=cm.gist_rainbow)" << "\n";
+  	pythonFile << "img = plt.imshow(grid, extent=(x.min(), x.max(), y.max(), y.min()), interpolation='nearest')" << "\n";
   	pythonFile << "plt.xlabel('x');" << "\n";
   	pythonFile << "plt.ylabel('y');" << "\n";
   	pythonFile << "plt.colorbar(img);" << "\n";
 
-  	pythonFile << "plt.show();" << "\n";
+  	//pythonFile << "plt.show();" << "\n";
+
+  	pythonFile << "for t in timeSteps:" << "\n";
+  	pythonFile << " x,y,scalar = np.loadtxt(t+'/alpha').T #Transposed for easier unpacking" << "\n";
+  	pythonFile << " nrows, ncols = "<< Nx <<", " << Nx << "\n";
+  	pythonFile << " grid = scalar.reshape((nrows, ncols))" << "\n";
+  	pythonFile << " img = plt.imshow(grid, extent=(x.min(), x.max(), y.max(), y.min()), interpolation='nearest')" << "\n";
+  	pythonFile << " images.append((img,))" << "\n";
+
+  	pythonFile << "alpha_ani = animation.ArtistAnimation(fig2, images)" << "\n";
+  	pythonFile << "alpha_ani.save('alpha.mp4', writer=writer)" << "\n";
 
 	pythonFile.close();
 }
