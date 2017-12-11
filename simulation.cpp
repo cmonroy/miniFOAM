@@ -31,9 +31,9 @@ using namespace std;
 simulation::simulation() //TODO: create a constructor from a dictionnary
 {
     t=0;
-    dt=0.1;
+    dt=0.5;
     L=10.0; //length of the square
-    Nx=40; //number of cells in x-direction
+    Nx=30; //number of cells in x-direction
     endTime=10.0;
     simulationFolder="/home/charles/trash/sim1";
 }

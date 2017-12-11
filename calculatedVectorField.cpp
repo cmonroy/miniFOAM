@@ -47,7 +47,7 @@ void calculatedVectorField::initialize(mesh& mesh_)
 {
     for (int i = 0; i < mesh_.getF(); i++)
     {
-        this->Ux[i]=1.0;
+        this->Ux[i]=0.0;
         this->Uy[i]=1.0;
     }
 }

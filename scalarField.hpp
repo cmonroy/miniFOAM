@@ -39,8 +39,8 @@ class scalarField
 
 public:
 	scalarField(std::string, mesh&);
-    SpMat ddtA(simulation&);
-    Eigen::VectorXd ddtb(simulation&);
+    SpMat ddtA(simulation&, mesh&);
+    Eigen::VectorXd ddtb(simulation&, mesh&);
 
     //std::vector<double> interpolateOnFaces(mesh&); //returns a vector of interpolated values at faces
     void initialize(mesh&);

@@ -159,3 +159,25 @@ double mesh::getyCOG(int i) const
     return yCOG;
 }
 
+double mesh::getV(int i) const
+{
+
+    double V_(0);
+    //see Peric eq.8.42
+    for (int k=0; k<4; k++)
+    {
+        double xc(0);
+        double yc(0);
+        for (int l=0; l<2; l++)
+        {
+           xc=xc+0.5*this->points[this->faces[this->cells[i]->getFaceList()[k]]->getLabelList()[l]]->getX();
+           yc=yc+0.5*this->points[this->faces[this->cells[i]->getFaceList()[k]]->getLabelList()[l]]->getY();
+        }
+        double Sfxc_=this->faces[this->cells[i]->getFaceList()[k]]->getSfx();
+        //double Sfyc_=this->faces[this->cells[i]->getFaceList()[k]]->getSfy();
+        V_=V_+xc*Sfxc_;//+yc*Sfyc_;
+    }
+    return V_;
+}
+
+

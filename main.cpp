@@ -56,8 +56,8 @@ int main()
 
 
         // Building linear system
-		A=alpha.ddtA(simu)+alpha.divA(Uf,simu,CG);
-        b=alpha.ddtb(simu);//+alpha.divb_explicit(Uf,simu,CG);
+		A=alpha.ddtA(simu,CG)+alpha.divA(Uf,simu,CG);
+        b=alpha.ddtb(simu,CG);//+alpha.divb_explicit(Uf,simu,CG);
 
         // Solving:
         Eigen::SimplicialCholesky<SpMat> chol(A);  // performs a Cholesky factorization of A

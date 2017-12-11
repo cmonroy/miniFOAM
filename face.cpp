@@ -26,8 +26,8 @@ face::face(int l, point& pointA, point& pointB)
 {
 	m_label = l;
 	m_length = pow(pow(pointB.getX()-pointA.getX(),2)+pow(pointB.getY()-pointA.getY(),2),0.5);
-	m_Sfx = -(pointB.getY()-pointA.getY());
-	m_Sfy = (pointB.getX()-pointA.getX());
+	m_Sfx = (pointB.getY()-pointA.getY());
+	m_Sfy = -(pointB.getX()-pointA.getX());
 	m_labelList.push_back(pointA.getLabel());
 	m_labelList.push_back(pointB.getLabel());
 }
