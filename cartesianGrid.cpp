@@ -55,17 +55,28 @@ cartesianGrid::cartesianGrid(int a, float size) : mesh()
 	}
 
 // Creation of faces
-	for (j = 0; j < n+1; j++)
+// La normale est toujours orientée vers le neighbour
+
+    j = 0;
+	for (i = 0; i < n; i++)
+	{
+		l=j*n+i;
+		faces.push_back(new face(l, *points[j*(n+1)+i], *points[j*(n+1)+i+1]));
+	}
+	for (j = 1; j < n+1; j++)
 	{
 		for (i = 0; i < n; i++)
 		{
 			l=j*n+i;
-			faces.push_back(new face(l, *points[j*(n+1)+i], *points[j*(n+1)+i+1]));
+			faces.push_back(new face(l, *points[j*(n+1)+i+1], *points[j*(n+1)+i]));
 		}
 	}
 	for (j = 0; j < n; j++)
 	{
-		for (i = 0; i < n+1; i++)
+        i=0;
+		l=n*(n+1)+j*(n+1)+i;
+		faces.push_back(new face(l, *points[j*(n+1)+i+n+1], *points[j*(n+1)+i]));
+		for (i = 1; i < n+1; i++)
 		{
 			l=n*(n+1)+j*(n+1)+i;
 			faces.push_back(new face(l, *points[j*(n+1)+i], *points[j*(n+1)+i+n+1]));
