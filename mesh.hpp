@@ -52,8 +52,8 @@ public:
 	void writeMesh(simulation&);
 	int getN() const { return totalNumberOfCells; };
 	int getF() const { return totalNumberOfFaces; };
-	float getxCOG(int) const;
-	float getyCOG(int) const;
+	double getxCOG(int) const;
+	double getyCOG(int) const;
 	std::vector<int> getOwnerList() const { return owner; };
 	std::vector<int> getNeighbourList() const { return neighbour; };
 	std::vector<face*> getFaces() const { return faces; };

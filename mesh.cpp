@@ -131,10 +131,10 @@ void mesh::writeMesh(simulation& simu_)
 
 }
 
-float mesh::getxCOG(int i) const
+double mesh::getxCOG(int i) const
 {
 
-    float xCOG(0);
+    double xCOG(0);
     for (int k=0; k<4; k++)
     {
         for (int l=0; l<2; l++)
@@ -145,10 +145,10 @@ float mesh::getxCOG(int i) const
     return xCOG;
 }
 
-float mesh::getyCOG(int i) const
+double mesh::getyCOG(int i) const
 {
 
-    float yCOG(0);
+    double yCOG(0);
     for (int k=0; k<4; k++)
     {
         for (int l=0; l<2; l++)

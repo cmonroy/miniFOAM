@@ -25,25 +25,10 @@ using namespace std;
 cell::cell(int l, face& faceA, face& faceB, face& faceC, face& faceD)
 {
 	m_label = l;
-	m_alpha = 0;
-	m_alpha_o = 0;
-	m_alpha_oo = 0;
-	m_U = 0;
-	m_V = 0;
 
 	m_faceList.push_back(faceA.getLabel());
 	m_faceList.push_back(faceB.getLabel());
 	m_faceList.push_back(faceC.getLabel());
 	m_faceList.push_back(faceD.getLabel());
-}
-
-void cell::advanceInTime()
-{
-	m_alpha_oo=m_alpha_o;
-	m_alpha_o=m_alpha;
-}
-
-void cell::splitCell()
-{
 }
 

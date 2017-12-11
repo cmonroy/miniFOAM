@@ -25,13 +25,13 @@
 class point
 {
 	int label;
-	float x;
-	float y;
+	double x;
+	double y;
 
 public:
-	point(int, float, float);
-	float getX() const { return x; };
-	float getY() const { return y; };
+	point(int, double, double);
+	double getX() const { return x; };
+	double getY() const { return y; };
 	int getLabel() const { return label; };
 
 };

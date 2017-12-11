@@ -25,12 +25,6 @@
 class cell
 {
 	int m_label;
-	float m_alpha; // value at current time step
-	float m_alpha_o;	// value at (n-1)
-	float m_alpha_oo;	// value at (n-2)
-	float m_U;
-	float m_V;
-
  	std::vector<int> m_faceList;
 
 public:
@@ -38,9 +32,6 @@ public:
 	//~cell();
 	vector<int> getFaceList() const { return m_faceList; };
 	void splitCell();
-	void advanceInTime();
-	float getU() const { return m_U; };
-	float getV() const { return m_V; };
 
 };
 

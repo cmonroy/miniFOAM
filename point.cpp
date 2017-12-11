@@ -20,7 +20,7 @@
 #include <string>
 
 
-point::point(int l, float a, float b)
+point::point(int l, double a, double b)
 {
 	label = l;
 	x = a;
