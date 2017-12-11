@@ -32,7 +32,8 @@ class cartesianGrid: public mesh
 
 public:
 	cartesianGrid(int, float);
-	//~cartesianGrid();
+	virtual double getV(int) const;
+	virtual ~cartesianGrid();
 	//void splitCell(cell &c);
 };
 

@@ -131,5 +131,30 @@ cartesianGrid::cartesianGrid(int a, float size) : mesh()
 
 }
 
+cartesianGrid::~cartesianGrid()
+{
+	for (auto j : cells)
+	{
+		delete j;
+	}
 
+	for (auto k : points)
+	{
+		delete k;
+	}
+	for (auto l : faces)
+	{
+		delete l;
+	}
+}
+
+
+
+double cartesianGrid::getV(int i) const
+{
+    double V_(0);
+    //see Peric eq.8.42
+    V_=(this->L/(double)this->n)*(this->L/(double)this->n);
+    return V_;
+}
 

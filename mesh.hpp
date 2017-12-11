@@ -48,13 +48,13 @@ protected:
 
 public:
 	mesh();
-	~mesh();
+	virtual ~mesh();
 	void writeMesh(simulation&);
 	int getN() const { return totalNumberOfCells; };
 	int getF() const { return totalNumberOfFaces; };
 	double getxCOG(int) const;
 	double getyCOG(int) const;
-	double getV(int) const;
+	virtual double getV(int) const;
 	std::vector<int> getOwnerList() const { return owner; };
 	std::vector<int> getNeighbourList() const { return neighbour; };
 	std::vector<face*> getFaces() const { return faces; };
