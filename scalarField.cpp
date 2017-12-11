@@ -140,7 +140,7 @@ Eigen::VectorXd scalarField::ddtb(simulation& simu_, mesh& mesh_)
     for (int i = 0; i < this->m_N; i++)
     {
         double V_=mesh_.getV(i);
-        b_(i)=V_*(this->valueOld[i])/simu_.getDt();
+        b_(i)=V_*(this->valueCurrent[i])/simu_.getDt();
     }
 
     return b_;
@@ -164,13 +164,13 @@ SpMat scalarField::divA(calculatedVectorField& Uf_, simulation& simu_, mesh& mes
         if (neighbour>=0) //internal face
         {
             //central-difference scheme:
-            /*diagCoefs_[owner]=diagCoefs_[owner]+flux_*0.5;
+            diagCoefs_[owner]=diagCoefs_[owner]+flux_*0.5;
             diagCoefs_[neighbour]=diagCoefs_[neighbour]-flux_*0.5;
             tripletList.push_back(T(owner,neighbour,flux_*0.5));
-            tripletList.push_back(T(neighbour,owner,-flux_*0.5));*/
+            tripletList.push_back(T(neighbour,owner,-flux_*0.5));
 
             //Upwind
-            if (flux_>0)
+            /*if (flux_>0)
             {
                 diagCoefs_[owner]=diagCoefs_[owner]+flux_;
 
@@ -182,7 +182,7 @@ SpMat scalarField::divA(calculatedVectorField& Uf_, simulation& simu_, mesh& mes
                 diagCoefs_[neighbour]=diagCoefs_[neighbour]-flux_;
                 tripletList.push_back(T(owner,neighbour,flux_));
                 tripletList.push_back(T(neighbour,owner,0.0));
-            }
+            }*/
         }
         else // boundary face
         {
