@@ -81,7 +81,7 @@ void simulation::writeVisuFile()
   	pythonFile << "x,y,scalar = np.loadtxt('0/alpha').T #Transposed for easier unpacking" << "\n";
   	pythonFile << "nrows, ncols = "<< Nx <<", " << Nx << "\n";
   	pythonFile << "grid = scalar.reshape((nrows, ncols))" << "\n";
-  	pythonFile << "img = plt.imshow(grid, extent=(x.min(), x.max(), y.max(), y.min()), interpolation='nearest')" << "\n";
+  	pythonFile << "img = plt.imshow(grid, extent=(x.min(), x.max(), y.min(), y.max()), interpolation='nearest')" << "\n";
   	pythonFile << "plt.xlabel('x');" << "\n";
   	pythonFile << "plt.ylabel('y');" << "\n";
   	pythonFile << "plt.colorbar(img);" << "\n";
@@ -92,7 +92,7 @@ void simulation::writeVisuFile()
   	pythonFile << " x,y,scalar = np.loadtxt(t+'/alpha').T #Transposed for easier unpacking" << "\n";
   	pythonFile << " nrows, ncols = "<< Nx <<", " << Nx << "\n";
   	pythonFile << " grid = scalar.reshape((nrows, ncols))" << "\n";
-  	pythonFile << " img = plt.imshow(grid, extent=(x.min(), x.max(), y.max(), y.min()), interpolation='nearest')" << "\n";
+  	pythonFile << " img = plt.imshow(grid, extent=(x.min(), x.max(), y.min(), y.max()), interpolation='nearest')" << "\n";
   	pythonFile << " images.append((img,))" << "\n";
 
   	pythonFile << "alpha_ani = animation.ArtistAnimation(fig2, images)" << "\n";
