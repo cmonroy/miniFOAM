@@ -38,6 +38,8 @@ int main()
 
 	CG.writeMesh(simu);
 
+	CG.writeFaces(simu);
+
     SpMat A(CG.getN(),CG.getN());
     Eigen::VectorXd b(CG.getN());
 
@@ -55,13 +57,34 @@ int main()
 		std::cout << simu.getT() << std::endl;
 
 
+
         // Building linear system
 		A=alpha.ddtA(simu,CG)+alpha.divA(Uf,simu,CG);
         b=alpha.ddtb(simu,CG);//+alpha.divb_explicit(Uf,simu,CG);
-
+        //std::cout << Eigen::MatrixXd(A) << std::endl;
+        //std::cout << b << std::endl;
         // Solving:
-        Eigen::SimplicialCholesky<SpMat> chol(A);  // performs a Cholesky factorization of A
-        Eigen::VectorXd x = chol.solve(b);         // use the factorization to solve for the given right hand side
+        //Eigen::SimplicialCholesky<SpMat> chol(A);  // performs a Cholesky factorization of A
+        //Eigen::VectorXd x = chol.solve(b);         // use the factorization to solve for the given right hand side
+
+        //std::cout << x << std::endl;
+
+        A.makeCompressed();
+         // Create solver
+        Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>, Eigen::Lower, Eigen::AMDOrdering<int> > solver;
+    // Eigen::ConjugateGradient<Eigen::SparseMatrix<float>, Eigen::Lower> cg;
+
+        // Eigen::ConjugateGradient<Eigen::SparseMatrix<float>, Eigen::Lower> cg;
+        solver.analyzePattern(A);
+        solver.compute(A);
+        if (solver.info() != Eigen::Success)
+         {
+             std::cerr << "Decomposition Failed" << std::endl;
+             getchar();
+         }
+        Eigen::VectorXd x = solver.solve(b);
+
+       // std::cout << x << std::endl;
 
         // Updating alpha field:
         alpha.update(x);
