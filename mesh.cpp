@@ -180,4 +180,22 @@ double mesh::getV(int i) const
     return V_;
 }
 
+void mesh::writeFaces(simulation& simu_)
+{
+
+    std::string simuFolder(simu_.getFolder());
+
+    std::string meshFolder = simuFolder + "/mesh";
+
+  	ofstream faceFile;
+  	faceFile.open (meshFolder+"/faces_xy.txt");
+  	faceFile << "#" <<  totalNumberOfFaces << "\n";
+	for (int i=0;  i < totalNumberOfFaces; i++)
+	{
+		faceFile <<  faces[i]->getXf() << " " <<  faces[i]->getYf() << " " <<  faces[i]->getSfx() << " "<<  faces[i]->getSfy() << " " << owner[i] << " " << neighbour[i] << " " << "\n";
+	}
+	faceFile.close();
+
+}
+
 

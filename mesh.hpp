@@ -58,7 +58,7 @@ public:
 	std::vector<int> getOwnerList() const { return owner; };
 	std::vector<int> getNeighbourList() const { return neighbour; };
 	std::vector<face*> getFaces() const { return faces; };
-	//void splitCell(cell &c);
+	void writeFaces(simulation&);
 };
 
 
