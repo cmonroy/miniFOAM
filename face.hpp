@@ -29,6 +29,8 @@ class face
 {
 	double m_Sfx;
 	double m_Sfy;
+	double m_xf;
+	double m_yf;
 
 	double m_length;
 
@@ -42,6 +44,9 @@ public:
 	int getLabel() const { return m_label; };
 	double getSfx() const { return m_Sfx; };
 	double getSfy() const { return m_Sfy; };
+	double getXf() const { return m_xf; };
+	double getYf() const { return m_yf; };
+
 	//~cartesianFace();
 };
 

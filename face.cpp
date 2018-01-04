@@ -30,6 +30,8 @@ face::face(int l, point& pointA, point& pointB)
 	m_Sfy = -(pointB.getX()-pointA.getX());
 	m_labelList.push_back(pointA.getLabel());
 	m_labelList.push_back(pointB.getLabel());
+	m_xf=(pointA.getX()+pointB.getX())*0.5;
+	m_yf=(pointA.getY()+pointB.getY())*0.5;
 }
 
 
