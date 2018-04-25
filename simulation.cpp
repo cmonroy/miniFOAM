@@ -36,6 +36,8 @@ simulation::simulation() //TODO: create a constructor from a dictionnary
     Nx=30; //number of cells in x-direction
     endTime=10.0;
     simulationFolder="/home/charles/trash/sim1";
+    divScheme="upwind"; //"upwind" or "centralDiff"
+    BC="vonNeuman"; //"vonNeumann" or "Dirichlet"
 }
 
 

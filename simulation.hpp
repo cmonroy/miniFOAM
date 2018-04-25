@@ -29,6 +29,8 @@ class simulation
 	double L;
 	int Nx;
     std::string simulationFolder;
+    std::string divScheme;
+    std::string BC;
 
 public :
 	simulation();
@@ -39,6 +41,8 @@ public :
 	double getL() const { return L; };
 	int getNx() const { return Nx; };
 	std::string getFolder() const { return simulationFolder; };
+	std::string getDivScheme() const { return divScheme; };
+	std::string getBC() const { return BC; };
 	void increment();
 	void writeVisuFile();
 };
