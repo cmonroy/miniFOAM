@@ -24,7 +24,9 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-//#include <boost>
+#if defined windows
+    #include <windows.h>
+#endif
 using namespace std;
 
 mesh::mesh()
@@ -57,20 +59,15 @@ mesh::~mesh()
 void mesh::writeMesh(simulation& simu_)
 {
 
-   /* boost::filesystem::path dir("~/trash/mesh");
-
-    if(!(boost::filesystem::exists(dir))){
-        std::cout<<"Doesn't Exist"<<std::endl;
-
-        if (boost::filesystem::create_directory(dir))
-            std::cout << "....Successfully Created !" << std::end;
-    }*/
-
     std::string simuFolder(simu_.getFolder());
 
     std::string meshFolder = simuFolder + "/mesh";
-    std::string myCommand("mkdir -p "  + meshFolder);
-    system(myCommand.c_str());
+    #if defined linux
+        std::string myCommand("mkdir -p "  + meshFolder);
+        system(myCommand.c_str());
+    #elif defined windows
+        CreateDirectory (meshFolder.c_str(), NULL);
+    #endif
 
 //const char *path="/home/user/file.txt";
   	ofstream pointFile;
