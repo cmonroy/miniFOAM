@@ -29,6 +29,9 @@
 typedef Eigen::SparseMatrix<double> SpMat; // declares a column-major sparse matrix type of double
 typedef Eigen::Triplet<double> T;
 
+#if defined windows
+    #include <windows.h>
+#endif
 using namespace std;
 
 
@@ -64,8 +67,13 @@ void scalarField::writeSF(simulation& simu_)
     std::ostringstream strT;
     strT << simu_.getT();
     std::string timeFolder = simuFolder + "/" + strT.str() + "/";
-    std::string myCommand("mkdir -p "  + timeFolder);
-    system(myCommand.c_str());
+
+    #if defined linux
+        std::string myCommand("mkdir -p "  + timeFolder);
+        system(myCommand.c_str());
+    #elif defined windows
+        CreateDirectory(timeFolder.c_str(), NULL);
+    #endif
 
   	ofstream scalarFile;
   	scalarFile.open (timeFolder+this->m_name);
@@ -83,8 +91,13 @@ void scalarField::writeXYandSF(mesh& mesh_,simulation& simu_)
     std::ostringstream strT;
     strT << simu_.getT();
     std::string timeFolder = simuFolder + "/" + strT.str() + "/";
-    std::string myCommand("mkdir -p "  + timeFolder);
-    system(myCommand.c_str());
+
+    #if defined linux
+        std::string myCommand("mkdir -p "  + timeFolder);
+        system(myCommand.c_str());
+    #elif defined windows
+        CreateDirectory(timeFolder.c_str(), NULL);
+    #endif
 
   	ofstream scalarFile;
   	scalarFile.open (timeFolder+this->m_name);
