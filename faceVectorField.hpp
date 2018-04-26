@@ -16,40 +16,35 @@
 //    You should have received a copy of the GNU General Public License       //
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.   //
 //****************************************************************************//
+#ifndef faceVectorFieldHeader
+#define faceVectorFieldHeader
 
-#include "calculatedVectorField.hpp"
-#include "mesh.hpp"
-#include "simulation.hpp"
-#include <iostream>
-#include <fstream>
+#include <string>
+#include <vector>
 #include <Eigen/Dense>
-using namespace std;
 
-using Eigen::VectorXd;
-using namespace Eigen;
+//using Eigen::VectorXd;
 
 
-calculatedVectorField::calculatedVectorField(std::string name, mesh& mesh_)
+class mesh;
+class simulation;
+
+class faceVectorField
 {
-    m_name=name;
-    m_F=mesh_.getF();
+    std::string m_name;
+    int m_F;
+	std::vector<double> Ux;
+	std::vector<double> Uy;
 
-    for (int i = 0; i < mesh_.getF(); i++)
-	{
-		Ux.push_back(0.0);
-		Uy.push_back(0.0);
-	}
-}
+public:
+	faceVectorField(std::string, mesh&);
+    void initialize(mesh&);
+	std::vector<double> getUx() const { return Ux; };
+	std::vector<double> getUy() const { return Uy; };
+    //void writeCVF(simulation&);
+    //void update(Eigen::VectorXd&);
 
-
-
-void calculatedVectorField::initialize(mesh& mesh_)
-{
-    for (int i = 0; i < mesh_.getF(); i++)
-    {
-        this->Ux[i]=0.0;
-        this->Uy[i]=1.0;
-    }
-}
+};
 
 
+#endif

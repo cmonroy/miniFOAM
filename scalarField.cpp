@@ -20,7 +20,7 @@
 #include "mesh.hpp"
 #include "face.hpp"
 #include "simulation.hpp"
-#include "calculatedVectorField.hpp"
+#include "faceVectorField.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -55,9 +55,11 @@ void scalarField::initialize(mesh& mesh_)
         float radius(1.0);
         if ((pow(mesh_.getxCOG(i),2)+pow(mesh_.getyCOG(i),2))<pow(radius,2))
         {
-            this->valueCurrent[i]=1.0;
-            this->valueOld[i]=1.0;
+            this->valueCurrent[i]=100.0;
+            this->valueOld[i]=100.0;
         }
+        /*this->valueCurrent[i]=mesh_.getxCOG(i);
+        this->valueOld[i]=mesh_.getxCOG(i)+;    */
     }
 }
 
@@ -159,7 +161,7 @@ Eigen::VectorXd scalarField::ddtb(simulation& simu_, mesh& mesh_)
     return b_;
 }
 
-SpMat scalarField::divA(calculatedVectorField& Uf_, simulation& simu_, mesh& mesh_)
+SpMat scalarField::divA(faceVectorField& Uf_, simulation& simu_, mesh& mesh_)
 {
     SpMat A_(this->m_N,this->m_N);
 
@@ -239,7 +241,7 @@ SpMat scalarField::divA(calculatedVectorField& Uf_, simulation& simu_, mesh& mes
     return A_;
 }
 
-Eigen::VectorXd scalarField::divb(calculatedVectorField& Uf_, simulation& simu_, mesh& mesh_)
+Eigen::VectorXd scalarField::divb(faceVectorField& Uf_, simulation& simu_, mesh& mesh_)
 {
     Eigen::VectorXd b_=Eigen::VectorXd::Zero(this->m_N);
 
@@ -273,13 +275,11 @@ Eigen::VectorXd scalarField::divb(calculatedVectorField& Uf_, simulation& simu_,
    // std::cout << b_ << std::endl;
 
     return b_;
-
-
 }
 
 
 
-Eigen::VectorXd scalarField::divb_explicit(calculatedVectorField& Uf_, simulation& simu_, mesh& mesh_)
+Eigen::VectorXd scalarField::divb_explicit(faceVectorField& Uf_, simulation& simu_, mesh& mesh_)
 {
     Eigen::VectorXd b_=Eigen::VectorXd::Zero(this->m_N);
 
@@ -288,7 +288,6 @@ Eigen::VectorXd scalarField::divb_explicit(calculatedVectorField& Uf_, simulatio
         int owner=mesh_.getOwnerList()[k];
         int neighbour=mesh_.getNeighbourList()[k];
         double flux_=Uf_.getUx()[k]*mesh_.getFaces()[k]->getSfx()+Uf_.getUy()[k]*mesh_.getFaces()[k]->getSfy();
-
 
         if (neighbour>=0) //internal face
         {
@@ -316,12 +315,7 @@ Eigen::VectorXd scalarField::divb_explicit(calculatedVectorField& Uf_, simulatio
         {
                 b_(owner)=b_(owner);
         }
-
     }
-
-
-
-
     return b_;
 }
 

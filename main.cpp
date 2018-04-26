@@ -20,7 +20,7 @@
 #include "cartesianGrid.hpp"
 #include "simulation.hpp"
 #include "scalarField.hpp"
-#include "calculatedVectorField.hpp"
+#include "faceVectorField.hpp"
 #include <Eigen/Sparse>
 
 
@@ -43,7 +43,7 @@ int main()
     SpMat A(CG.getN(),CG.getN());
     Eigen::VectorXd b(CG.getN());
 
-    calculatedVectorField Uf("Uf", CG);
+    faceVectorField Uf("Uf", CG);
     Uf.initialize(CG);
 
     scalarField alpha("alpha", CG);
@@ -60,7 +60,7 @@ int main()
 
         // Building linear system
 		A=alpha.ddtA(simu,CG)+alpha.divA(Uf,simu,CG);
-        b=alpha.ddtb(simu,CG);//+alpha.divb_explicit(Uf,simu,CG);
+        b=alpha.ddtb(simu,CG)+alpha.divb(Uf,simu,CG);
         //std::cout << Eigen::MatrixXd(A) << std::endl;
         //std::cout << b << std::endl;
         // Solving:

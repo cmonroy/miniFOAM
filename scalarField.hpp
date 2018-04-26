@@ -28,7 +28,7 @@ typedef Eigen::SparseMatrix<double> SpMat; // declares a column-major sparse mat
 
 class mesh;
 class simulation;
-class calculatedVectorField;
+class faceVectorField;
 
 class scalarField
 {
@@ -47,9 +47,9 @@ public:
     void writeSF(simulation&); //writes value of scalar field
     void writeXYandSF(mesh&,simulation&); //writes coordinates of centers of cells + values of scalar field
     void update(Eigen::VectorXd&);
-    SpMat divA(calculatedVectorField&, simulation&, mesh&);
-    Eigen::VectorXd divb(calculatedVectorField&, simulation&, mesh&);
-    Eigen::VectorXd divb_explicit(calculatedVectorField&, simulation&, mesh&);
+    SpMat divA(faceVectorField&, simulation&, mesh&);
+    Eigen::VectorXd divb(faceVectorField&, simulation&, mesh&);
+    Eigen::VectorXd divb_explicit(faceVectorField&, simulation&, mesh&);
 };
 
 
